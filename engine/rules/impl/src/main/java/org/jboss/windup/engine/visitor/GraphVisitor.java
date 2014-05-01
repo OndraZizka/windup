@@ -37,16 +37,16 @@ public interface GraphVisitor {
 	public void visitWarArchive(WarArchive entry);
 	
 	public void visitJavaClass(JavaClass entry);
-	public void visitEjbEntity(EjbEntityFacet entry);
-	public void visitEjbService(EjbSessionBeanFacet entry);
-	public void visitMessageDrivenBean(MessageDrivenBeanFacet entry);
-	public void visitEjbEntity(SpringBeanFacet entry);
+	//public void visitEjbEntity(EjbEntityFacet entry);
+	//public void visitEjbService(EjbSessionBeanFacet entry);
+	//public void visitMessageDrivenBean(MessageDrivenBeanFacet entry);
+	//public void visitEjbEntity(SpringBeanFacet entry);
 	
-	public void visitXmlResource(XmlResource entry);
-	public void visitEjbConfiguration(EjbConfigurationFacet entry);
-	public void visitSpringConfiguration(SpringConfigurationFacet entry);
+	public void visitXmlResource(XmlResource entry); // MavenFacet, MavenRemoteFetch
 	public void visitDoctype(DoctypeMeta entry);
-	public void visitNamespace(NamespaceMeta entry);
+	//public void visitEjbConfiguration(EjbConfigurationFacet entry);
+	//public void visitSpringConfiguration(SpringConfigurationFacet entry);
+	//public void visitNamespace(NamespaceMeta entry);
 	
     public void visitManifest(JarManifest entry);
     public void visitProperties(PropertiesMeta entry);

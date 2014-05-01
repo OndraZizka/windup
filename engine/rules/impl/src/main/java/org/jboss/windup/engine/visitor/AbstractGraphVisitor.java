@@ -36,119 +36,40 @@ public abstract class AbstractGraphVisitor implements GraphVisitor
         return Collections.emptyList();
     }
 
-    @Override
-    public void visitResource(Resource entry)
-    {
-        // nothing.
-    }
+    @Override public void visitResource(Resource entry) { } 
+    @Override public void visitFile(FileResource entry) { }
+    @Override public void visitArchive(ArchiveResource entry) {  }
+    @Override public void visitArchiveEntry(ArchiveEntryResource entry) {  }
+    @Override public void visitEarArchive(EarArchive entry) {  }
+    @Override public void visitJarArchive(JarArchive entry) {  }
+    @Override public void visitWarArchive(WarArchive entry) {  }
 
-    @Override
-    public void visitFile(FileResource entry)
-    {
-        // nothing.
-    }
+    @Override public void visitJavaClass(JavaClass entry) {  }
+    
+    @Override public void visitDoctype(DoctypeMeta entry) {  }
+    
+    /*
+    @Override public void visitEjbEntity(EjbEntityFacet entry) {  }
 
-    @Override
-    public void visitArchive(ArchiveResource entry)
-    {
-        // nothing.
-    }
+    @Override public void visitEjbService(EjbSessionBeanFacet entry) {  }
 
-    @Override
-    public void visitArchiveEntry(ArchiveEntryResource entry)
-    {
-        // nothing.
-    }
+    @Override public void visitMessageDrivenBean(MessageDrivenBeanFacet entry) {  }
 
-    @Override
-    public void visitEarArchive(EarArchive entry)
-    {
-        // nothing.
-    }
+    @Override public void visitEjbEntity(SpringBeanFacet entry) {  }
 
-    @Override
-    public void visitJarArchive(JarArchive entry)
-    {
-        // nothing.
-    }
 
-    @Override
-    public void visitWarArchive(WarArchive entry)
-    {
-        // nothing.
-    }
+    @Override public void visitEjbConfiguration(EjbConfigurationFacet entry) {  }
 
-    @Override
-    public void visitJavaClass(JavaClass entry)
-    {
-        // nothing.
-    }
+    @Override public void visitSpringConfiguration(SpringConfigurationFacet entry) {  }
+    */
+    @Override public void visitXmlResource(XmlResource entry) {  }
+    @Override public void visitManifest(JarManifest entry) {  }
 
-    @Override
-    public void visitEjbEntity(EjbEntityFacet entry)
-    {
-        // nothing.
-    }
+    /*
+    @Override public void visitNamespace(NamespaceMeta entry) {  }
+    */
 
-    @Override
-    public void visitEjbService(EjbSessionBeanFacet entry)
-    {
-        // nothing.
-    }
-
-    @Override
-    public void visitMessageDrivenBean(MessageDrivenBeanFacet entry)
-    {
-        // nothing.
-    }
-
-    @Override
-    public void visitEjbEntity(SpringBeanFacet entry)
-    {
-        // nothing.
-    }
-
-    @Override
-    public void visitXmlResource(XmlResource entry)
-    {
-        // nothing.
-    }
-
-    @Override
-    public void visitEjbConfiguration(EjbConfigurationFacet entry)
-    {
-        // nothing.
-    }
-
-    @Override
-    public void visitSpringConfiguration(SpringConfigurationFacet entry)
-    {
-        // nothing.
-    }
-
-    @Override
-    public void visitDoctype(DoctypeMeta entry)
-    {
-        // nothing.
-    }
-
-    @Override
-    public void visitManifest(JarManifest entry)
-    {
-        // nothing.
-    }
-
-    @Override
-    public void visitNamespace(NamespaceMeta entry)
-    {
-        // nothing.
-    }
-
-    @Override
-    public void visitProperties(PropertiesMeta entry)
-    {
-        // nothing.
-    }
+    @Override public void visitProperties(PropertiesMeta entry) {  }
 
     @SafeVarargs
     protected final List<Class<? extends GraphVisitor>> generateDependencies(Class<? extends GraphVisitor>... deps)
