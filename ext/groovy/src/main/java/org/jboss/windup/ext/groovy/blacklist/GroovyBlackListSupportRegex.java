@@ -3,7 +3,7 @@ package org.jboss.windup.ext.groovy.blacklist;
 import java.util.regex.Pattern;
 
 import org.jboss.windup.graph.GraphContext;
-import org.jboss.windup.graph.model.BlackListModel;
+import org.jboss.windup.rules.apps.java.scan.model.BlackListModel;
 import org.jboss.windup.rules.apps.javascanner.ast.event.JavaScannerASTEvent;
 
 public class GroovyBlackListSupportRegex extends AbstractGroovyBlackListSupport
