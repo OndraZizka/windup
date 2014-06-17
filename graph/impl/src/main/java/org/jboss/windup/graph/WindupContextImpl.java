@@ -21,8 +21,11 @@ public class WindupContextImpl implements WindupContext
     private static final Logger LOG = LoggerFactory.getLogger(WindupContext.class);
 
     @Inject
+    private GraphApiCompositeClassLoaderProvider graphApiCompositeClassLoaderProvider;
+
+    @Inject
     private GraphTypeRegistry graphTypeRegistry;
-    
+
     private File runDirectory;
     private GraphContext graphContext;
 
@@ -30,7 +33,8 @@ public class WindupContextImpl implements WindupContext
     {
         if (graphContext == null)
         {
-            graphContext = new GraphContextImpl(new File(getRunDirectory(), "windup-graph"), graphTypeRegistry);
+            graphContext = new GraphContextImpl(new File(getRunDirectory(), "windup-graph"), graphTypeRegistry,
+                        graphApiCompositeClassLoaderProvider);
         }
         return graphContext;
     }
@@ -43,11 +47,11 @@ public class WindupContextImpl implements WindupContext
         }
         return runDirectory;
     }
-    
+
     @Override
     public Set<String> getPackagesToProfile()
     {
         return new HashSet<String>();
     }
-    
+
 }
