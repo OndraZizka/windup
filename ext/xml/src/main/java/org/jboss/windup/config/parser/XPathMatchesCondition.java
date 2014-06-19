@@ -1,4 +1,4 @@
-package org.jboss.windup.config;
+package org.jboss.windup.config.parser;
 
 import org.jboss.windup.config.GraphRewrite;
 import org.jboss.windup.config.ConfigurationException;
@@ -9,6 +9,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.jboss.windup.config.ConfigurationException;
+import org.jboss.windup.config.GraphRewrite;
 
 import org.jboss.windup.config.condition.GraphCondition;
 import org.jboss.windup.graph.dao.XmlResourceDao;
