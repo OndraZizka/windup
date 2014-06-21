@@ -13,7 +13,7 @@ import org.jboss.windup.config.ConfigurationException;
 import org.jboss.windup.config.GraphRewrite;
 
 import org.jboss.windup.config.condition.GraphCondition;
-import org.jboss.windup.graph.dao.XmlResourceDao;
+import org.jboss.windup.rules.apps.xml.dao.XmlResourceDao;
 import org.jboss.windup.graph.model.resource.XmlResourceModel;
 import org.ocpsoft.rewrite.context.EvaluationContext;
 import org.w3c.dom.Document;
