@@ -26,6 +26,7 @@ import com.tinkerpop.frames.modules.FrameClassLoaderResolver;
 import com.tinkerpop.frames.modules.Module;
 import com.tinkerpop.frames.modules.gremlingroovy.GremlinGroovyModule;
 import com.tinkerpop.frames.modules.javahandler.JavaHandlerModule;
+import static org.jboss.windup.graph.model.WindupVertexFrame.TYPE_PROP;
 
 public class GraphContextImpl implements GraphContext
 {
@@ -157,7 +158,7 @@ public class GraphContextImpl implements GraphContext
     public <T extends VertexFrame, S extends Service<T>> S getService(Class<T> type)
     {
         S closestMatch = null;
-        for (Service<? extends VertexFrame> service : graphServices)
+        for (Service<? extends VertexFrame> service : this.graphServices)
         {
             if (service.getType() == type)
             {
@@ -178,7 +179,7 @@ public class GraphContextImpl implements GraphContext
     @Override
     public File getDiskCacheDirectory()
     {
-        return diskCacheDir;
+        return this.diskCacheDir;
     }
 
     @Override

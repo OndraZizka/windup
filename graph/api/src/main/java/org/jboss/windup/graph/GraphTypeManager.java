@@ -26,18 +26,35 @@ import com.tinkerpop.frames.modules.TypeResolver;
 import com.tinkerpop.frames.modules.typedgraph.TypeField;
 import com.tinkerpop.frames.modules.typedgraph.TypeRegistry;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.inject.Singleton;
+import org.apache.commons.lang.StringUtils;
+import org.jboss.windup.graph.model.WindupVertexFrame;
 
+
+/**
+ * Windup's implementation of extended type handling for TinkerPop Frames.
+ * Frames can only hold one type per Vertex.
+ * This allows storing multiple types based on the @TypeValue.value(),
+ * also in the "type" property (see {@link WindupVertexFrame.TYPE_PROP}, but delimited by |.
+ */
 @Singleton
 public class GraphTypeManager implements TypeResolver, FrameInitializer
 {
     private Map<String,Class<? extends WindupVertexFrame>> registeredTypes= new HashMap<>();
     private TypeRegistry typeRegistry = new TypeRegistry();
 
+    
     public Set<Class<? extends WindupVertexFrame>> getRegisteredTypes()
     {
         return Collections.unmodifiableSet(new HashSet<Class<? extends WindupVertexFrame>>(registeredTypes.values()));
     }
 
+    
     public void addTypeToRegistry(Class<? extends WindupVertexFrame> wvf)
     {
         TypeValue typeValueAnnotation = wvf.getAnnotation(TypeValue.class);

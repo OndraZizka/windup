@@ -22,6 +22,7 @@ import com.thinkaurelius.titan.core.attribute.Cmp;
 import com.thinkaurelius.titan.core.attribute.Text;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
+import static org.jboss.windup.graph.model.WindupVertexFrame.TYPE_PROP;
 
 @RunWith(Arquillian.class)
 public class FrameMapHandlerTest

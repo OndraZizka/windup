@@ -6,6 +6,8 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.frames.FramedGraphQuery;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
+import org.jboss.windup.graph.model.WindupVertexFrame;
+import static org.jboss.windup.graph.model.WindupVertexFrame.TYPE_PROP;
 
 class QueryTypeCriterion implements QueryFramesCriterion
 {

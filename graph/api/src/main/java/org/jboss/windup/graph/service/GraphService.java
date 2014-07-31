@@ -25,6 +25,15 @@ import com.tinkerpop.frames.FramedGraphQuery;
 import com.tinkerpop.frames.VertexFrame;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import javax.inject.Inject;
+import org.jboss.windup.graph.GraphContext;
+import org.jboss.windup.graph.model.WindupConfigurationModel;
+import org.jboss.windup.graph.model.WindupVertexFrame;
+import static org.jboss.windup.graph.model.WindupVertexFrame.TYPE_PROP;
+import org.jboss.windup.graph.service.exception.NonUniqueResultException;
 
 public class GraphService<T extends WindupVertexFrame> implements Service<T>
 {

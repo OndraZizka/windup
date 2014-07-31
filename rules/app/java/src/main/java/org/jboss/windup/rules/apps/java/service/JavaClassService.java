@@ -19,6 +19,7 @@ import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.pipes.PipeFunction;
+import static org.jboss.windup.graph.model.WindupVertexFrame.TYPE_PROP;
 
 public class JavaClassService extends GraphService<JavaClassModel>
 {

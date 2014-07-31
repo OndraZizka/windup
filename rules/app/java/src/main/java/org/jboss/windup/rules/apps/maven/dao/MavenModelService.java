@@ -14,6 +14,7 @@ import org.jboss.windup.rules.apps.xml.XmlResourceModel;
 import com.thinkaurelius.titan.core.attribute.Text;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
+import static org.jboss.windup.graph.model.WindupVertexFrame.TYPE_PROP;
 
 @Singleton
 public class MavenModelService extends GraphService<MavenProjectModel>
