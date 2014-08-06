@@ -42,9 +42,9 @@ public class FrameToJaxbTest
     {
         ForgeArchive archive = ShrinkWrap.create(ForgeArchive.class)
             .addBeansXML()
-            .addClass( XmlUtils.class )
+            //.addClass( XmlUtils.class )
             .addPackage("org.jboss.windup.reporting.xslt.jaxb")
-            .addPackage("org.jboss.windup.reporting.xslt.util")
+            //.addPackage("org.jboss.windup.reporting.xslt.util")
             //.addAsResource(new File("src/test/resources/reports"))
             .addAsAddonDependencies(
                 AddonDependencyEntry.create("org.jboss.forge.furnace.container:cdi"),

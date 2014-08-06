@@ -14,13 +14,13 @@ import org.jboss.windup.reporting.meta.ann.ReportElement;
  */
 public interface ReportCommonsModelModel extends ModelModel
 {
-    
+    public static final String ELEM_TYPE = "elementType";
     public static final String TITLE = "title";
     public static final String DESC = "desc";
     public static final String ICON = "icon";
     
-    @Property("elementType") void setElement( ReportElement.Type type );
-    @Property("elementType") ReportElement.Type getElement();
+    @Property(ELEM_TYPE) void setElement( ReportElement.Type type );
+    @Property(ELEM_TYPE) ReportElement.Type getElement();
     
     @Property("cssClass") String getCssClass();
     @Property("cssClass") void setCssClass( String cls );

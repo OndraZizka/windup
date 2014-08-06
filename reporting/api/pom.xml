@@ -88,11 +88,7 @@
             <type>jar</type>
         </dependency>
         
-        
-        <dependency>
-            <groupId>com.tinkerpop</groupId>
-            <artifactId>frames</artifactId>
-        </dependency>
+
         
         <!-- Tests -->
         <dependency>

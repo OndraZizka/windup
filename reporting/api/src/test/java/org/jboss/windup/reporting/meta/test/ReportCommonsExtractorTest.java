@@ -24,7 +24,6 @@ import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 import org.jboss.windup.reporting.util.ReportCommonsExtractor;
 import org.jboss.windup.reporting.meta.ReportCommons;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 
 @RunWith(Arquillian.class)
@@ -32,8 +31,9 @@ public class ReportCommonsExtractorTest
 {
     @Deployment
     @Dependencies({
+        @AddonDependency(name = "org.jboss.forge.furnace.container:cdi"),
         @AddonDependency(name = "org.jboss.windup.graph:windup-graph"),
-        @AddonDependency(name = "org.jboss.forge.furnace.container:cdi")
+        //@AddonDependency(name = "org.jboss.windup.reporting:windup-reporting"),
     })
     public static ForgeArchive getDeployment()
     {
@@ -41,8 +41,9 @@ public class ReportCommonsExtractorTest
             .addBeansXML()
             .addClasses(ReportCommonsTestElementModel.class, ReportCommonsTestElementSubModel.class)
             .addAsAddonDependencies(
-                AddonDependencyEntry.create("org.jboss.windup.graph:windup-graph"),
-                AddonDependencyEntry.create("org.jboss.forge.furnace.container:cdi")
+                AddonDependencyEntry.create("org.jboss.forge.furnace.container:cdi"),
+                AddonDependencyEntry.create("org.jboss.windup.graph:windup-graph")
+                //AddonDependencyEntry.create("org.jboss.windup.reporting:windup-reporting")
             );
         return archive;
     }
