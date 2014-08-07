@@ -12,6 +12,15 @@
 
     <artifactId>windup-reporting-xslt</artifactId>
     <name>Windup Engine - Reporting - XLST</name>
+    
+    <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/java</directory>
+                <excludes><exclude>*.java</exclude></excludes>
+            </testResource>
+        </testResources>
+    </build>
 
     <dependencies>
         <!-- Project deps -->

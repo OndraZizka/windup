@@ -1,5 +1,6 @@
 package org.jboss.windup.reporting.xslt.jaxb;
 
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +45,8 @@ public class FrameToJaxbTest
             .addBeansXML()
             //.addClass( XmlUtils.class )
             .addPackage("org.jboss.windup.reporting.xslt.jaxb")
+            //.addAsResource("src/test/java/logging.properties")
+            .addAsResource("logging.properties")
             //.addPackage("org.jboss.windup.reporting.xslt.util")
             //.addAsResource(new File("src/test/resources/reports"))
             .addAsAddonDependencies(
@@ -61,7 +64,11 @@ public class FrameToJaxbTest
     
     @BeforeClass
     public static void init(){
-        //Logging.init();
+        //Logging.init(FrameToJaxbTest.class);
+        InputStream is = FrameToJaxbTest.class.getResourceAsStream("/logging.properties");
+        System.out.println(" Props: " + is);
+        Logging.init(is);
+        
         //System.setProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager");
         //org.jboss.logmanager.Logger.getLogger("org.jboss.forge").setLevel(Level.WARNING);
         //org.jboss.logmanager.Logger.getLogger("org.jboss.weld").setLevel(Level.WARNING);
