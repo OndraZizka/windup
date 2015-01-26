@@ -23,6 +23,7 @@ import com.tinkerpop.frames.VertexFrame;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
+
 public class GraphService<T extends WindupVertexFrame> implements Service<T>
 {
     private Class<T> type;
@@ -298,13 +299,19 @@ public class GraphService<T extends WindupVertexFrame> implements Service<T>
      *
      * @see GraphTypeManagerTest
      */
-    public static <T extends WindupVertexFrame> T addTypeToModel(GraphContext graphContext, WindupVertexFrame frame,
-                Class<T> type)
+    public static <T extends WindupVertexFrame> T addTypeToModel(GraphContext graphContext, WindupVertexFrame frame, Class<T> type)
     {
         Vertex vertex = frame.asVertex();
         graphContext.getGraphTypeRegistry().addTypeToElement(type, vertex);
         return graphContext.getFramed().frame(vertex, type);
     }
+
+    public T reload(T frame)
+    {
+        Vertex vertex = frame.asVertex();
+        return this.context.getFramed().frame(vertex, this.type);
+    }
+
 
     @Override
     public void remove(final T model)
@@ -319,4 +326,5 @@ public class GraphService<T extends WindupVertexFrame> implements Service<T>
             }
         });
     }
+
 }
