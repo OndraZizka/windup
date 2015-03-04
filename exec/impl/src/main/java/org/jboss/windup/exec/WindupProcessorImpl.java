@@ -7,13 +7,17 @@ import javax.inject.Inject;
 
 import org.jboss.forge.furnace.services.Imported;
 import org.jboss.forge.furnace.util.Assert;
+import org.jboss.forge.furnace.util.Predicate;
 import org.jboss.windup.config.DefaultEvaluationContext;
 import org.jboss.windup.config.GraphRewrite;
 import org.jboss.windup.config.PreRulesetEvaluation;
 import org.jboss.windup.config.RuleLifecycleListener;
 import org.jboss.windup.config.RuleSubset;
+import org.jboss.windup.config.WindupRuleProvider;
 import org.jboss.windup.config.loader.WindupRuleLoader;
 import org.jboss.windup.config.metadata.WindupRuleMetadata;
+import org.jboss.windup.engine.predicates.AndFilter;
+import org.jboss.windup.engine.predicates.TagsRuleProviderFilter;
 import org.jboss.windup.exec.configuration.WindupConfiguration;
 import org.jboss.windup.graph.GraphContext;
 import org.jboss.windup.graph.model.WindupConfigurationModel;
@@ -34,6 +38,7 @@ import org.ocpsoft.rewrite.util.Visitor;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ * @author Ondrej Zizka, ozizka@redhat.com
  */
 public class WindupProcessorImpl implements WindupProcessor
 {
@@ -58,14 +63,14 @@ public class WindupProcessorImpl implements WindupProcessor
 
         validateConfig(windupConfiguration);
 
-        GraphContext context = windupConfiguration.getGraphContext();
+        GraphContext graphContext = windupConfiguration.getGraphContext();
 
-        context.setOptions(windupConfiguration.getOptionMap());
+        graphContext.setOptions(windupConfiguration.getOptionMap());
 
-        // initialize the basic configuration data in the graph
-        WindupConfigurationModel configModel = WindupConfigurationService.getConfigurationModel(context);
-        configModel.setInputPath(getFileModel(context, windupConfiguration.getInputPath()));
-        configModel.setOutputPath(getFileModel(context, windupConfiguration.getOutputDirectory()));
+        // Initialize the basic configuration data in the graph.
+        WindupConfigurationModel configModel = WindupConfigurationService.getConfigurationModel(graphContext);
+        configModel.setInputPath(getFileModel(graphContext, windupConfiguration.getInputPath()));
+        configModel.setOutputPath(getFileModel(graphContext, windupConfiguration.getOutputDirectory()));
         configModel.setOfflineMode(windupConfiguration.isOffline());
         for (Path path : windupConfiguration.getAllUserRulesDirectories())
         {
@@ -75,18 +80,27 @@ public class WindupProcessorImpl implements WindupProcessor
                 throw new WindupException("Null path found (all paths are: "
                             + windupConfiguration.getAllUserRulesDirectories() + ")");
             }
-            configModel.addUserRulesPath(getFileModel(context, path));
+            configModel.addUserRulesPath(getFileModel(graphContext, path));
         }
 
         for (Path path : windupConfiguration.getAllIgnoreDirectories())
         {
-            configModel.addUserIgnorePath(getFileModel(context, path));
+            configModel.addUserIgnorePath(getFileModel(graphContext, path));
         }
 
-        final GraphRewrite event = new GraphRewrite(context);
+        final GraphRewrite event = new GraphRewrite(graphContext);
 
-        WindupRuleMetadata ruleMetadata = windupConfigurationLoader.loadConfiguration(context,
-                    windupConfiguration.getRuleProviderFilter());
+
+        // Merge the user-provided RuleProvider filter and others from the WindupConfiguration.
+
+        Predicate<WindupRuleProvider> configuredFilter = windupConfiguration.getRuleProviderFilter();
+        final TagsRuleProviderFilter tagsFilter = new TagsRuleProviderFilter(windupConfiguration.getOnlyExecuteRuleProvidersWithTags());
+        Predicate<WindupRuleProvider> overallFilter = new AndFilter(configuredFilter, tagsFilter);
+
+
+
+        WindupRuleMetadata ruleMetadata =
+                windupConfigurationLoader.loadConfiguration(graphContext, overallFilter);
         event.getRewriteContext().put(WindupRuleMetadata.class, ruleMetadata);
 
         Configuration rules = ruleMetadata.getConfiguration();

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +24,7 @@ import org.jboss.windup.exec.WindupProcessor;
 import org.jboss.windup.exec.WindupProgressMonitor;
 import org.jboss.windup.exec.configuration.options.InputPathOption;
 import org.jboss.windup.exec.configuration.options.OfflineModeOption;
+import org.jboss.windup.exec.configuration.options.OnlyExecuteRuleProvidersWithTagsOption;
 import org.jboss.windup.exec.configuration.options.OutputPathOption;
 import org.jboss.windup.exec.configuration.options.UserIgnorePathOption;
 import org.jboss.windup.exec.configuration.options.UserRulesDirectoryOption;
@@ -30,7 +32,7 @@ import org.jboss.windup.graph.GraphContext;
 
 /**
  * Configuration of WindupProcessor.
- * 
+ *
  * @author Ondrej Zizka, ozizka at redhat.com
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
@@ -181,7 +183,7 @@ public class WindupConfiguration
     /**
      * Gets all the directories/files in which the regexes for ignoring the files is placed. This includes the file/directory specified by the user
      * and the default paths that are WINDUP_HOME/ignore and ~/.windup/ignore.
-     * 
+     *
      * @return
      */
     public Iterable<Path> getAllIgnoreDirectories()
@@ -224,7 +226,7 @@ public class WindupConfiguration
 
     /**
      * Contains a list of {@link Path}s with the directory that contains user provided rules.
-     * 
+     *
      * This method does guard against duplicate directories.
      */
     public WindupConfiguration addDefaultUserRulesDirectory(Path path)
@@ -255,7 +257,7 @@ public class WindupConfiguration
 
     /**
      * Adds a path to the list of default {@link Path}s with directories/files that contain files with regexes of file names to be ignored.
-     * 
+     *
      * This method does guard against duplicate directories.
      */
     public WindupConfiguration addDefaultUserIgnorePath(Path path)
@@ -340,4 +342,33 @@ public class WindupConfiguration
         Boolean offline = getOptionValue(OfflineModeOption.NAME);
         return offline == null ? false : offline;
     }
+
+
+    /**
+     * Retrieves the option value and deduplicates and normalizes the values (only alphanumeric character and minus).
+     */
+    public String[]  getOnlyExecuteRuleProvidersWithTags()
+    {
+        List<String> tagsList = getOptionValue(OnlyExecuteRuleProvidersWithTagsOption.NAME);
+        if (tagsList == null)
+            return new String[0];
+
+        Set<String> tags = normalizeTags(tagsList);
+        return (String[]) tags.toArray();
+    }
+
+
+    /**
+     * Currently only lower-casing and changing any non-alphanumeric char to a minus.
+     */
+    private Set<String> normalizeTags(List<String> tags)
+    {
+        Set<String> tags2 = new HashSet<String>(tags.size());
+        for( String tag : tags )
+        {
+            tags2.add(tag.replaceAll("\\W_", "-").toLowerCase(Locale.ENGLISH));
+        }
+        return tags2;
+    }
+
 }
