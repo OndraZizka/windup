@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -177,6 +178,8 @@ public class RuleSubset extends DefaultOperationBuilder implements CompositeOper
             listener.beforeExecution(event);
         }
 
+        Map<Rule, Exception> errors = new LinkedHashMap();
+
         EvaluationContextImpl subContext = new EvaluationContextImpl();
         for (int i = 0; i < rules.size(); i++)
         {
@@ -306,7 +309,14 @@ public class RuleSubset extends DefaultOperationBuilder implements CompositeOper
                     if (location != null)
                         exMsg += "\n  Defined in: " + location;
                 }
-                throw new WindupException(exMsg, ex);
+
+                WindupException wrappedException = new WindupException(exMsg, ex);
+                errors.put(rule, wrappedException);
+
+                Object fatal_ = ruleContext.get(RuleMetadata.TREAT_EXCEPTIONS_AS_FATAL);
+                if (fatal_ instanceof Boolean && ((Boolean)fatal_).booleanValue())
+                    throw wrappedException;
+                else
             }
         }// for each Rule
 
