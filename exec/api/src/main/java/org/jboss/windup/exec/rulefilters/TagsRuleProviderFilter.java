@@ -1,11 +1,10 @@
 package org.jboss.windup.exec.rulefilters;
 
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.apache.commons.collections.CollectionUtils;
-import org.jboss.forge.furnace.util.Predicate;
 import org.jboss.windup.config.RuleProvider;
 
 /**
@@ -14,7 +13,7 @@ import org.jboss.windup.config.RuleProvider;
  *
  * @author Ondrej Zizka, ozizka@redhat.com
  */
-public class TagsRuleProviderFilter implements Predicate<RuleProvider>
+public class TagsRuleProviderFilter implements RuleProviderFilter
 {
     private static Logger log = Logger.getLogger(TagsRuleProviderFilter.class.getName());
 
@@ -24,10 +23,10 @@ public class TagsRuleProviderFilter implements Predicate<RuleProvider>
     private boolean requireAllExcludeTags = false;
 
 
-    public TagsRuleProviderFilter(Set<String> includeTags, Set<String> excludeTags)
+    public TagsRuleProviderFilter(Collection<String> includeTags, Collection<String> excludeTags)
     {
-        this.includeTags = new HashSet(Arrays.asList(includeTags));
-        this.excludeTags = new HashSet(Arrays.asList(excludeTags));
+        this.includeTags = includeTags == null ? null : new HashSet(includeTags);
+        this.excludeTags = excludeTags == null ? null : new HashSet(excludeTags);
     }
 
 
@@ -50,13 +49,22 @@ public class TagsRuleProviderFilter implements Predicate<RuleProvider>
     {
         Set<String> tags = provider.getMetadata().getTags();
 
-        boolean includeMatches = this.requireAllIncludeTags
+        boolean includeMatches =
+                (this.includeTags == null)
+                ||
+                (this.requireAllIncludeTags
                 ? tags.containsAll(this.includeTags)
-                : CollectionUtils.containsAny(tags, this.includeTags);
+                : CollectionUtils.containsAny(tags, this.includeTags));
 
-        boolean excludeMatches = this.requireAllExcludeTags
+        if (!includeMatches)
+            return false;
+
+        boolean excludeMatches =
+                (this.excludeTags == null)
+                ||
+                (this.requireAllExcludeTags
                 ? !tags.containsAll(this.excludeTags)
-                : !CollectionUtils.containsAny(tags, this.excludeTags);
+                : !CollectionUtils.containsAny(tags, this.excludeTags));
 
         return includeMatches && excludeMatches;
     }
