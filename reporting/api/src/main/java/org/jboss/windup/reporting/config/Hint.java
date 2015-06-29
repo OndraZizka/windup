@@ -1,6 +1,7 @@
 package org.jboss.windup.reporting.config;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +25,7 @@ import org.ocpsoft.rewrite.param.RegexParameterizedPatternParser;
 /**
  * Used as an intermediate to support the addition of {@link InlineHintModel} objects to the graph via an Operation.
  */
-public class Hint extends ParameterizedIterationOperation<FileLocationModel> implements HintText, HintLink, HintSeverity
+public class Hint extends ParameterizedIterationOperation<FileLocationModel> implements HintText, HintLink, HintSeverity, HintEffort
 {
     private static final Logger log = Logger.getLogger(Hint.class.getName());
 
@@ -35,6 +36,7 @@ public class Hint extends ParameterizedIterationOperation<FileLocationModel> imp
     private int effort;
     private Severity severity = DEFAULT_SEVERITY;
     private List<Link> links = new ArrayList<>();
+    private Set<String> tags = Collections.EMPTY_SET;
 
     protected Hint(String variable)
     {
@@ -137,9 +139,16 @@ public class Hint extends ParameterizedIterationOperation<FileLocationModel> imp
     }
 
     @Override
-    public OperationBuilder withEffort(int effort)
+    public HintEffort withEffort(int effort)
     {
         this.effort = effort;
+        return this;
+    }
+
+    @Override
+    public OperationBuilder withTags(Set<String> tags)
+    {
+        this.tags = tags;
         return this;
     }
 
