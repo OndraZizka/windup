@@ -9,6 +9,8 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
+import java.util.Set;
+import org.jboss.windup.graph.MapInProperties;
 
 /**
  * This is used to classify lines within application source {@link FileModel} instances, and to provide hints and related data regarding specific
@@ -98,6 +100,15 @@ public interface InlineHintModel extends FileLocationModel
      */
     @Adjacency(label = LINKS, direction = Direction.OUT)
     Iterable<LinkModel> getLinks();
+
+    @SetInProperties(propertyPrefix = "tag")
+    InlineHintModel addTag(String tag);
+
+    @SetInProperties(propertyPrefix = "tag")
+    InlineHintModel setTags(Set<String>);
+
+    @SetInProperties(propertyPrefix = "tag")
+    Set<String> getTags();
 
     /**
      * Set the ID of the rule that triggered this particular blacklist entry
