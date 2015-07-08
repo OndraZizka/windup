@@ -8,7 +8,7 @@ import org.ocpsoft.rewrite.config.OperationBuilder;
  * @author <a href="mailto:mbriskar@gmail.com">Matej Briskar</a>
  *
  */
-public interface HintEffort
+public interface HintEffort extends OperationBuilder
 {
 
     /**

@@ -177,7 +177,7 @@ public class JavaIgnoreRegexesTest
 
                 List<ClassificationModel> classifications = Iterators.asList(classificationService.findAll());
                 Assert.assertEquals(1, classifications.size());
-                classifications.get(0).getDescription().contains("JavaClassTestFile");
+                Assert.assertTrue(classifications.get(0).getDescription().contains("JavaClassTestFile"));
 
                 Iterable<FileModel> fileModels = classifications.get(0).getFileModels();
                 Assert.assertEquals(2, Iterators.asList(fileModels).size());
@@ -215,7 +215,7 @@ public class JavaIgnoreRegexesTest
                     typeReferences.add(payload);
                 }
             };
-            
+
             return ConfigurationBuilder.begin()
             .addRule()
             .when(JavaClass.references("org.jboss.forge.furnace.{name}").inType("{file}{suffix}").at(TypeReferenceLocation.IMPORT))

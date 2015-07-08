@@ -11,6 +11,7 @@ import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 import java.util.Set;
 import org.jboss.windup.graph.MapInProperties;
+import org.jboss.windup.graph.SetInProperties;
 
 /**
  * This is used to classify lines within application source {@link FileModel} instances, and to provide hints and related data regarding specific
@@ -105,7 +106,7 @@ public interface InlineHintModel extends FileLocationModel
     InlineHintModel addTag(String tag);
 
     @SetInProperties(propertyPrefix = "tag")
-    InlineHintModel setTags(Set<String>);
+    InlineHintModel setTags(Set<String> tags);
 
     @SetInProperties(propertyPrefix = "tag")
     Set<String> getTags();

@@ -1,5 +1,6 @@
 package org.jboss.windup.rules.apps.java.scan.provider;
 
+import java.util.Collections;
 import org.jboss.windup.config.AbstractRuleProvider;
 import org.jboss.windup.config.metadata.MetadataBuilder;
 import org.jboss.windup.graph.GraphContext;
@@ -10,6 +11,7 @@ import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 
 /**
  * @author <a href="mailto:jesse.sightler@gmail.com">Jesse Sightler</a>
+ * @author <a href="mailto:dynawest@gmail.com">Ondrej Zizka</a>
  */
 public class FindUnboundJavaReferencesRuleProvider extends AbstractRuleProvider
 {
@@ -31,6 +33,7 @@ public class FindUnboundJavaReferencesRuleProvider extends AbstractRuleProvider
                         Hint
                             .withText("This class reference could not be found on the classpath")
                             .withEffort(5)
+                            .withTags(Collections.EMPTY_SET)
                     );
     }
     // @formatter:on

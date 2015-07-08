@@ -56,7 +56,7 @@ public class HintHandler implements ElementHandler<Hint>
         String severityStr = $(element).attr("severity");
         String message = $(element).attr("message");
         String in = $(element).attr("in");
-        Set<String> tags = new HashSet<String>();
+        Set<String> tags = new HashSet<>();
 
         if (StringUtils.isBlank(message))
         {
@@ -129,7 +129,7 @@ public class HintHandler implements ElementHandler<Hint>
         return (Hint) hint;
     }
 
-    private String trimLeadingAndTrailingSpaces(String markdown)
+    public static String trimLeadingAndTrailingSpaces(String markdown)
     {
         StringBuilder markdownSB = new StringBuilder();
 
