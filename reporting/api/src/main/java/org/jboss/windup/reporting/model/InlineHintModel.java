@@ -10,7 +10,7 @@ import com.tinkerpop.frames.Adjacency;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 import java.util.Set;
-import org.jboss.windup.graph.MapInProperties;
+import org.jboss.windup.graph.Indexed;
 import org.jboss.windup.graph.SetInProperties;
 
 /**
@@ -102,12 +102,22 @@ public interface InlineHintModel extends FileLocationModel
     @Adjacency(label = LINKS, direction = Direction.OUT)
     Iterable<LinkModel> getLinks();
 
+    /**
+     * Add a tag associated with this {@link ClassificationModel}
+     */
+    @Indexed
     @SetInProperties(propertyPrefix = "tag")
     InlineHintModel addTag(String tag);
 
+    /**
+     * Set the set of tags associated with this {@link ClassificationModel}
+     */
     @SetInProperties(propertyPrefix = "tag")
     InlineHintModel setTags(Set<String> tags);
 
+    /**
+     * Get the set of tags associated with this {@link ClassificationModel}
+     */
     @SetInProperties(propertyPrefix = "tag")
     Set<String> getTags();
 

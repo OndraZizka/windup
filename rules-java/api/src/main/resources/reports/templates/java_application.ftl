@@ -10,14 +10,15 @@
 	<#else>
 		<span class="label label-info">
 	</#if>
-		<#nested/></span>
+            <#nested/>
+        </span>
 </#macro>
 
 <#macro reportLineRenderer reportLinesIterable>
 <#if reportLinesIterable.iterator()?has_content>
 
-<div class="panel panel-primary">
-<div class="panel-heading">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
             <h3 class="panel-title">Application Messages</h3>
         </div>
         <table class="table table-striped table-bordered">
@@ -25,56 +26,64 @@
             <#list reportLinesIterable.iterator() as reportLine>
             <tr>
                 <td>
-                	${reportLine.message}
-                	<@render_rule_link ruleID=reportLine.ruleID/>
-				</td>
+                    ${reportLine.message}
+                    <@render_rule_link ruleID=reportLine.ruleID/>
+                </td>
             </tr>
             </#list>
         </table>
     </div>
 
- </#if>
+</#if>
 </#macro>
 
 <#macro fileModelRenderer fileModel>
-  <#assign sourceReportModel = fileModelToSourceReport(fileModel)!>
-  <#if sourceReportModel.reportFilename??>
+    <#assign sourceReportModel = fileModelToSourceReport(fileModel)!>
+    <#if sourceReportModel.reportFilename??>
 	<tr>
-	  <td>
-	     <a href="${sourceReportModel.reportFilename}">
-	       ${getPrettyPathForFile(fileModel)}
-	     </a>
-	  </td>
+        <#-- Name -->
+        <td>
+            <a href="${sourceReportModel.reportFilename}">
+                ${getPrettyPathForFile(fileModel)}
+            </a>
+        </td>
+        <#-- Technology -->
 		<td>
 			<#list getTechnologyTagsForFile(fileModel).iterator() as tag>
-		    <@tagRenderer tag>
-		    	<#if tag.version?has_content> ${tag.name} ${tag.version}
-		    	<#else>
-		    		${tag.name}
-		    	</#if>
-		    </@tagRenderer>
-		  </#list>
-		</td>
-		<td>
-		  <#if sourceReportModel.sourceFileModel.inlineHints.iterator()?has_content || sourceReportModel.sourceFileModel.classificationModels.iterator()?has_content>
-  		  <b>Warnings: ${sourceReportModel.sourceFileModel.inlineHintCount + sourceReportModel.sourceFileModel.classificationCount} items</b>
-          <ul class='notifications'>
-			<#list sourceReportModel.sourceFileModel.classificationModels.iterator() as classification>
-				<#if classification.classification?has_content>
-				<li class='warning'>${classification.classification}</li>
-				</#if>
-			</#list>
-            <#list sourceReportModel.sourceFileModel.inlineHints.iterator() as hintLine>
-              <#if hintLine.hint?has_content>
-                <li class='warning'>${hintLine.title}</li>
-              </#if>
+                ///AAAA
+                <@tagRenderer tag>
+                    ${tag.name} ${tag.version!}
+                </@tagRenderer>
             </#list>
-          </ul>
-      </#if>
+			<#list getTagsFromFileClassificationsAndHints(fileModel).iterator() as tag>
+                ///BBBB
+                <@tagRenderer tag>
+                    ${tag.name}
+                </@tagRenderer>
+            </#list>
 		</td>
+        <#-- Issues -->
 		<td>
-		  <#assign fileEffort = getMigrationEffortPointsForFile(sourceReportModel.sourceFileModel)>
-	    ${fileEffort}
+            <#if sourceReportModel.sourceFileModel.inlineHints.iterator()?has_content || sourceReportModel.sourceFileModel.classificationModels.iterator()?has_content>
+                <b>Warnings: ${sourceReportModel.sourceFileModel.inlineHintCount + sourceReportModel.sourceFileModel.classificationCount} items</b>
+                <ul class='notifications'>
+                    <#list sourceReportModel.sourceFileModel.classificationModels.iterator() as classification>
+                        <#if classification.classification?has_content>
+                        <li class='warning'>${classification.classification}</li>
+                        </#if>
+                    </#list>
+                    <#list sourceReportModel.sourceFileModel.inlineHints.iterator() as hintLine>
+                        <#if hintLine.hint?has_content>
+                            <li class='warning'>${hintLine.title}</li>
+                        </#if>
+                    </#list>
+                </ul>
+            </#if>
+		</td>
+        <#-- Story points -->
+		<td>
+            <#assign fileEffort = getMigrationEffortPointsForFile(sourceReportModel.sourceFileModel)>
+            ${fileEffort}
 		</td>
 	</tr>
 	</#if>
@@ -107,20 +116,20 @@
 					<tr>
 						<td>
 						<#assign organizations = projectModelToOrganizations(projectModel)>
-						
+
 						<#if iterableHasContent(organizations)>
 							<#list organizations.iterator() as organization>
 								${organization.name}
 							</#list>
 						</#if>
 						</td>
-						
+
 						<td>${projectModel.name!""}</td>
 						<td>
 							<#if projectModel.url?has_content>
 								<a href="${projectModel.url}">Project Site</a>
 							</#if>
-									
+
 							<#if projectModelSha1Archive(projectModel)?has_content>
 								<#assign sha1URL = '|ga|1|1:"' + projectModelSha1Archive(projectModel) + '"'>
 								<#assign sha1URL = 'http://search.maven.org/#search' + sha1URL?url('ISO-8859-1')>
