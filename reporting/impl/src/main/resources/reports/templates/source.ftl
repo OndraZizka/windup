@@ -73,26 +73,30 @@
 
                             <#list getTechnologyTagsForFile(reportModel.sourceFileModel).iterator()>
                             <h4>Technologies</h4>
-				        	<div style="overflow: auto"><!-- "auto" to contain all the tags. -->
+				        	<div class="technologies" style="overflow: auto"><!-- "auto" to contain all the tags. -->
 				        		<#items as techTag>
 				              		<span class="label label-info">${techTag.name}</span>
 				            	</#items>
 				        	</div>
                             </#list>
 
+                            <#list reportModel.sourceFileModel.classificationModels.iterator()>
 				        	<h4>Classifications</h4>
-                            <ul>
-                                <#list reportModel.sourceFileModel.classificationModels.iterator() as item>
+                            <ul class='classifications'>
+                                <#items as item>
                                 <#if item.classification??>
                                     <li>
-                                        <em>${item.classification!}</em>
-                                        <@render_rule_link renderType='glyph' ruleID=item.ruleID class='rule-link'/><#-- Link to the rule -->
-                                        <#if item.description??> - ${item.description}</#if>
+                                        <div class='title'>
+                                            <em>${item.classification!}</em>
+                                            <@render_rule_link renderType='glyph' ruleID=item.ruleID class='rule-link'/><#-- Link to the rule -->
+                                        </div>
+                                        <#if item.description??><div class='desc'>${item.description}</div></#if>
                                         <@render_linkable linkable=item layout='ul'/><#-- Link contained in classification -->
                                     </li>
                                 </#if>
-                                </#list>
+                                </#items>
                             </ul>
+                            </#list>
 
                             <#list reportModel.sourceFileModel.linksToTransformedFiles.iterator() >
 				        	<h4>Automatically Translated Files</h4>
