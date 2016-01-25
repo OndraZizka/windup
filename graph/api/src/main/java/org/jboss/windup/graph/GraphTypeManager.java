@@ -16,9 +16,9 @@ import org.jboss.windup.util.furnace.FurnaceClasspathScanner;
 
 import com.thinkaurelius.titan.core.TitanProperty;
 import com.thinkaurelius.titan.graphdb.vertices.StandardVertex;
-import com.tinkerpop.blueprints.Edge;
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import com.tinkerpop.blueprints.Element;
-import com.tinkerpop.blueprints.Vertex;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import com.tinkerpop.blueprints.util.wrappers.event.EventVertex;
 import com.tinkerpop.frames.FrameInitializer;
 import com.tinkerpop.frames.FramedGraph;
@@ -30,6 +30,9 @@ import com.tinkerpop.frames.modules.TypeResolver;
 import com.tinkerpop.frames.modules.typedgraph.TypeField;
 import com.tinkerpop.frames.modules.typedgraph.TypeRegistry;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
+import java.io.Serializable;
+import java.util.Iterator;
+import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 
 /**
  * Windup's implementation of extended type handling for TinkerPop Frames. This allows storing multiple types based on the @TypeValue.value(), also in
@@ -113,18 +116,23 @@ public class GraphTypeManager implements TypeResolver, FrameInitializer
             return;
         String typeValue = typeValueAnnotation.value();
 
-        v.removeProperty(typeFieldName);
+        v.property(typeFieldName).remove();
 
-        for (TitanProperty existingType : v.getProperties(typeFieldName))
+
+        for (VertexProperty existingType : iterable(v.properties(typeFieldName)))
         {
-            if (!existingType.getValue().toString().equals(typeValue))
+            if (!existingType.value().toString().equals(typeValue))
             {
-                v.addProperty(typeFieldName, existingType.getValue());
+                v.property(typeFieldName, existingType.value());
             }
         }
 
-        v.addProperty(typeFieldName, typeValue);
+        v.property(typeFieldName, typeValue);
         addSuperclassType(kind, element);
+    }
+
+    private static <T> Iterable<T> iterable(final Iterator<T> it){
+         return new Iterable<T>(){ public Iterator<T> iterator(){ return it; } };
     }
 
     /**
@@ -157,16 +165,16 @@ public class GraphTypeManager implements TypeResolver, FrameInitializer
         String typeFieldName = typeHoldingTypeField.getAnnotation(TypeField.class).value();
         String typeValue = typeValueAnnotation.value();
 
-        for (TitanProperty existingType : v.getProperties(typeFieldName))
+        for (VertexProperty existingType : iterable(v.properties(typeFieldName)))
         {
-            if (existingType.getValue().toString().equals(typeValue))
+            if (existingType.value().toString().equals(typeValue))
             {
                 // this is already in the list, so just exit now
                 return;
             }
         }
 
-        v.addProperty(typeFieldName, typeValue);
+        v.property(typeFieldName, typeValue);
         addSuperclassType(kind, element);
     }
 
@@ -214,10 +222,9 @@ public class GraphTypeManager implements TypeResolver, FrameInitializer
             throw new IllegalArgumentException("Class " + type.getCanonicalName() + " lacks a @TypeValue annotation");
         }
         StandardVertex titanVertex = GraphTypeManager.asTitanVertex(v);
-        Iterable<TitanProperty> vertexTypes = titanVertex.getProperties(WindupVertexFrame.TYPE_PROP);
-        for (TitanProperty typeProp : vertexTypes)
+        for (VertexProperty typeProp : iterable(titanVertex.properties(WindupVertexFrame.TYPE_PROP)))
         {
-            String typeValue = typeProp.getValue().toString();
+            String typeValue = typeProp.value().toString();
             if (typeValue.equals(typeValueAnnotation.value()))
             {
                 return true;
@@ -257,14 +264,15 @@ public class GraphTypeManager implements TypeResolver, FrameInitializer
             String propName = typeHoldingTypeField.getAnnotation(TypeField.class).value();
             StandardVertex v = GraphTypeManager.asTitanVertex(e);
 
-            Iterable<TitanProperty> valuesAll = v.getProperties(propName);
+            Iterator<VertexProperty<Serializable>> valuesAll = v.properties(propName);
             if (valuesAll != null)
             {
 
                 List<Class<?>> resultClasses = new ArrayList<>();
-                for (TitanProperty value : valuesAll)
+                while(valuesAll.hasNext())
                 {
-                    Class<?> type = getTypeRegistry().getType(typeHoldingTypeField, value.getValue().toString());
+                    VertexProperty<Serializable> value = valuesAll.next();
+                    Class<?> type = getTypeRegistry().getType(typeHoldingTypeField, value.value().toString());
                     if (type != null)
                     {
                         // first check that no subclasses have already been added

@@ -7,12 +7,13 @@ import java.util.Map;
 import org.jboss.windup.graph.frames.TypeAwareFramedGraphQuery;
 
 import com.thinkaurelius.titan.core.TitanGraph;
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.util.wrappers.event.EventGraph;
 import com.tinkerpop.frames.FramedGraph;
 
 /**
  * Context for interacting with the underlying graph database API.
- * 
+ *
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
 public interface GraphContext extends Closeable
@@ -25,24 +26,24 @@ public interface GraphContext extends Closeable
     /**
      * Get the underlying {@link EventGraph}, which is itself a wrapper for a {@link TitanGraph}.
      */
-    EventGraph<TitanGraph> getGraph();
-    
+    EventGraph<Graph> getGraph(); ///<TitanGraph>
+
     /**
      * Creates new graph using the configuration. In case there was already a graph located in the specified path, it will be deleted.
      */
     GraphContext create();
-    
+
     /**
      * Loads the graph using the configuration.
      */
     GraphContext load();
-    
-    
+
+
 
     /**
      * Get the {@link FramedGraph} view of the underlying {@link EventGraph}.
      */
-    FramedGraph<EventGraph<TitanGraph>> getFramed();
+    FramedGraph<EventGraph<Graph>> getFramed(); ///<TitanGraph>
 
     /**
      * Get the {@link GraphTypeManager}.

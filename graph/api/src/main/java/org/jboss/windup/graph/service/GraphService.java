@@ -1,5 +1,6 @@
 package org.jboss.windup.graph.service;
 
+import com.thinkaurelius.titan.core.TitanGraph;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -17,7 +18,8 @@ import com.thinkaurelius.titan.core.TitanTransaction;
 import com.thinkaurelius.titan.core.attribute.Text;
 import com.thinkaurelius.titan.util.datastructures.IterablesUtil;
 import com.tinkerpop.blueprints.GraphQuery;
-import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.Predicate;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import com.tinkerpop.frames.FramedGraphQuery;
 import com.tinkerpop.frames.VertexFrame;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
@@ -48,7 +50,8 @@ public class GraphService<T extends WindupVertexFrame> implements Service<T>
             @Override
             public Void execute()
             {
-                getGraphContext().getGraph().getBaseGraph().commit();
+                TitanGraph titanGraph = (TitanGraph) getGraphContext().getGraph().getBaseGraph();
+                titanGraph.tx().commit();
                 return null;
             }
         });
@@ -323,7 +326,8 @@ public class GraphService<T extends WindupVertexFrame> implements Service<T>
     @Override
     public TitanTransaction newTransaction()
     {
-        return context.getGraph().getBaseGraph().newTransaction();
+        TitanGraph titanGraph = (TitanGraph) getGraphContext().getGraph().getBaseGraph();
+        return titanGraph.newTransaction();
     }
 
     /**

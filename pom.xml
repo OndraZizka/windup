@@ -18,9 +18,10 @@
 
     <properties>
         <version.forge>2.20.1.Final</version.forge>
-        <version.furnace>2.22.7.Final</version.furnace>
-        <version.titangraph>0.5.4</version.titangraph>
-        <version.tinkerpop.blueprints>2.5.0</version.tinkerpop.blueprints>
+        <version.furnace>2.22.10.Final</version.furnace>
+        <version.titangraph>1.0.0</version.titangraph>
+        <version.tinkerpop>3.0.1-incubating</version.tinkerpop>
+        <version.tinkerpop.blueprints>2.6.0</version.tinkerpop.blueprints>
         <version.freemarker>2.3.23</version.freemarker>
         <version.jacoco>0.7.5.201505241946</version.jacoco>
 
@@ -64,7 +65,7 @@
         <module>bom</module>
         <module>windup-test-harness</module>
         <module>forks/fernflower</module>
-        <module>forks/frames</module>
+        <module>forks/frames-tp3</module>
         <module>forks/jdt</module>
         <module>forks/procyon</module>
         <module>rexster</module>
@@ -139,11 +140,11 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.2</version>
+                    <version>3.3</version>
                     <configuration>
-                        <compilerVersion>1.7</compilerVersion>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <compilerVersion>1.8</compilerVersion>
+                        <source>1.8</source>
+                        <target>1.8</target>
                         <encoding>UTF-8</encoding>
                         <meminitial>128m</meminitial>
                         <maxmem>512m</maxmem>
@@ -233,7 +234,7 @@
                     <plugin>
                         <groupId>org.asciidoctor</groupId>
                         <artifactId>asciidoctor-maven-plugin</artifactId>
-                        <version>1.5.2</version>
+                        <version>1.5.3</version>
                         <executions>
                             <execution>
                                 <id>render-asciidoc</id>
@@ -255,7 +256,7 @@
                     <!-- Aggregate Javadoc. -->
                     <plugin>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.2</version>
+                        <version>2.10.3</version>
                         <executions>
                             <execution>
                                 <id>javadocs-dist</id>
