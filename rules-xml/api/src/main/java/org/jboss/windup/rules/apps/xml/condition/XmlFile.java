@@ -13,7 +13,6 @@ import org.jboss.windup.graph.service.GraphService;
 import org.jboss.windup.rules.apps.xml.condition.validators.XmlCacheValidator;
 import org.jboss.windup.rules.apps.xml.condition.validators.XmlFileDtdValidator;
 import org.jboss.windup.rules.apps.xml.condition.validators.XmlFileNameValidator;
-import org.jboss.windup.rules.apps.xml.condition.validators.XmlFileValidator;
 import org.jboss.windup.rules.apps.xml.condition.validators.XmlFileXpathValidator;
 import org.jboss.windup.rules.apps.xml.model.XmlFileModel;
 import org.jboss.windup.rules.apps.xml.model.XmlTypeReferenceModel;

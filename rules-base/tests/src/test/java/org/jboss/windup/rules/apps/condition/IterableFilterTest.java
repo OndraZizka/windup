@@ -22,10 +22,8 @@ import org.jboss.windup.exec.rulefilters.NotPredicate;
 import org.jboss.windup.exec.rulefilters.RuleProviderPhasePredicate;
 import org.jboss.windup.graph.GraphContext;
 import org.jboss.windup.graph.GraphContextFactory;
-import org.jboss.windup.graph.model.resource.FileModel;
 import org.jboss.windup.rules.apps.java.config.SourceModeOption;
 import org.jboss.windup.rules.files.condition.FileContent;
-import org.jboss.windup.rules.files.condition.ToFileModel;
 import org.jboss.windup.rules.files.model.FileLocationModel;
 import org.jboss.windup.rules.general.IterableFilter;
 import org.junit.Assert;
@@ -40,8 +38,6 @@ import javax.inject.Singleton;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**

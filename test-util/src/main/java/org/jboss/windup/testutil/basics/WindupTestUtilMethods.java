@@ -9,7 +9,6 @@ import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.param.DefaultParameterValueStore;
 import org.ocpsoft.rewrite.param.ParameterValueStore;
 
-import java.util.List;
 
 /**
  * A class providing helping static methods for the tests in Windup.
