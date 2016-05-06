@@ -73,15 +73,27 @@
                         <ul class="traits">
                             <#assign gav = dependencyProject.asVertex().getProperty('mavenIdentifier')!?trim >
                             <#assign sha1 = projectModelToSha1(dependencyProject)!>
-                            <#if gav?? && gav?trim?has_content >
+                            <#if gav?trim?has_content >
                                 <li class="trait">
-                                    <span>Maven coordinates:</span>
+                                    <span>Maven coordinates:</span> (from the project infromation)
                                         <#if sha1?has_content>
                                             <#assign sha1URL = 'http://search.maven.org/#search|ga|1|1:"' + sha1?url('ISO-8859-1') + '"'>
                                             <a href="${sha1URL?html}" target="_blank">${gav}</a>
                                         <#else>
                                             ${gav}
                                         </#if>
+                                </li>
+                            </#if>
+                            <#assign coord = dependencyProject.rootFileModel.coordinate! >
+                            <#if coord?has_content >
+                                <li class="trait">
+                                    <span>Maven coordinates:</span>  (identified by SHA1 checksum)
+                                    <#assign url = 'http://search.maven.org/#search|ga|1|'
+                                            +'g:"' + coord.groupId?url('ISO-8859-1') + '" AND '
+                                            +'a:"' + coord.artifactId?url('ISO-8859-1') + '" AND '
+                                            +'v:"' + coord.version?url('ISO-8859-1') + '"'
+                                    >
+                                    <a href="${url?html}" target="_blank">${coord.toString()}</a>
                                 </li>
                             </#if>
                             <#if sha1?trim?has_content>
