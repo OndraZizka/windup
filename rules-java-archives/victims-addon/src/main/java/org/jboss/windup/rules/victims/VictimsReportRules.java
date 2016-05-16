@@ -24,7 +24,7 @@ import org.ocpsoft.rewrite.context.EvaluationContext;
 
 
 /**
- * Creates a report for all the ignored files along with all the regexes they were matched against.
+ * Creates a report for all archives identified by the Victims service as containing a security vulnerability.
  *
  * @author Ondrej Zizka
  */
@@ -32,7 +32,7 @@ import org.ocpsoft.rewrite.context.EvaluationContext;
 public class VictimsReportRules extends AbstractRuleProvider
 {
     public static final String TITLE = "Archives affected by security vulnerabilities";
-    public static final String TEMPLATE_REPORT = "/org/jboss/windup/qs/victims/Report-Security.html";
+    public static final String TEMPLATE_REPORT = "/org/jboss/windup/rules/victims/Report-Security.html";
 
     // @formatter:off
     @Override
