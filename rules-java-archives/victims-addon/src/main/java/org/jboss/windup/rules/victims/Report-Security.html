@@ -29,10 +29,11 @@ VictimsReportModel reportModel
                 <td><#if file.fileName?has_content> ${file.fileName} </#if></td>
                 <td><#if file.filePath?has_content> ${file.filePath} </#if></td>
                 <td>
-                    <ul><#list file.vulnerabilities.iterator() as vul>
-	                        <li>
-	                        <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=${vul.cve}">${vul.cve}</a>
-	                        </li>
+                    <ul>
+                        <#list file.vulnerabilities.iterator() as vul>
+                        <li>
+                            <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=${vul.cve}">${vul.cve}</a>
+                        </li>
                         </#list>
                     </ul>
                 </td>
