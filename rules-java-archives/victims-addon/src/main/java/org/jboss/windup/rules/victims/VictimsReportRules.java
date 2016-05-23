@@ -31,7 +31,7 @@ import org.ocpsoft.rewrite.context.EvaluationContext;
 @RuleMetadata(tags = { "java" }, phase = ReportGenerationPhase.class)
 public class VictimsReportRules extends AbstractRuleProvider
 {
-    public static final String TITLE = "Archives affected by security vulnerabilities";
+    public static final String TITLE = "Security";
     public static final String TEMPLATE_REPORT = "/org/jboss/windup/rules/victims/Report-Security.html";
 
     // @formatter:off
@@ -71,7 +71,7 @@ public class VictimsReportRules extends AbstractRuleProvider
     private VictimsReportModel createReport(GraphContext graphCtx,
                 WindupJavaConfigurationModel javaCfg, ProjectModel rootProjectModel)
     {
-        GraphService<VictimsReportModel> reportServ = new GraphService<VictimsReportModel>(graphCtx, VictimsReportModel.class);
+        GraphService<VictimsReportModel> reportServ = new GraphService<>(graphCtx, VictimsReportModel.class);
         VictimsReportModel reportM = reportServ.create();
 
         // Report metadata
@@ -82,9 +82,13 @@ public class VictimsReportRules extends AbstractRuleProvider
         reportM.setProjectModel(rootProjectModel);
         reportM.setTemplatePath(TEMPLATE_REPORT);
         reportM.setTemplateType(TemplateType.FREEMARKER);
+        reportM.setReportIconClass("glyphicon glyphicon-fire");
+        reportM.setDescription(
+            "A list of the security issues found in the application, such like archives containing security vulnerabilities."
+            + "Disclaimer: This list may not contain all vulnerabilities. Even if it's empty, your application still may contain security flaws.");
 
         // Get all jars
-        GraphService<AffectedJarModel> jarService = new GraphService<AffectedJarModel>(graphCtx, AffectedJarModel.class);
+        GraphService<AffectedJarModel> jarService = new GraphService<>(graphCtx, AffectedJarModel.class);
         Iterable<AffectedJarModel> jars = jarService.findAll();
 
         // For each affected jar...

@@ -40,7 +40,7 @@ public class CheckArchivesWithVictimsRules extends AbstractRuleProvider
     private static final Logger log = Logging.get(CheckArchivesWithVictimsRules.class);
 
     private VictimsDBInterface db;
-    private Date victiomsLastUpdated;
+    private Date victimsLastUpdated;
     private int victimsRecordCount;
 
     // @formatter:off
@@ -51,7 +51,7 @@ public class CheckArchivesWithVictimsRules extends AbstractRuleProvider
         {
             db = VictimsDB.db();
             victimsRecordCount = db.getRecordCount();
-            victiomsLastUpdated = db.lastUpdated();
+            victimsLastUpdated = db.lastUpdated();
         }
         catch(VictimsException ex)
         {
@@ -61,48 +61,48 @@ public class CheckArchivesWithVictimsRules extends AbstractRuleProvider
 
         return ConfigurationBuilder.begin()
 
-            // Check the jars
-            .addRule()
-            .when(Query.fromType(ArchiveModel.class))
+        // Check the jars
+        .addRule()
+        .when(Query.fromType(ArchiveModel.class))
+        .perform(
+            Log.message(Level.INFO, "Victims database last updated on: " + new SimpleDateFormat("y-M-d H:m:s").format(victimsLastUpdated)),
+            Log.message(Level.INFO, "Victims database records:   " + victimsRecordCount),
+
+            Iteration.over(ArchiveModel.class) // TODO: Use IteratingRuleProvider?
             .perform(
-                    Log.message(Level.INFO, "Victims database last updated on: " + new SimpleDateFormat("y-M-d H:m:s").format(victiomsLastUpdated)),
-                    Log.message(Level.INFO, "Victims database records:   " + victimsRecordCount),
+                new AbstractIterationOperation<ArchiveModel>() {
+                    @Override
+                    public void perform(GraphRewrite event, EvaluationContext context, ArchiveModel archive) {
+                        log.info("\tVicti.ms checking archive: " + archive.getFilePath());
+                        GraphService<VulnerabilityModel> vulGS = new GraphService<>(event.getGraphContext(), VulnerabilityModel.class);
+                        String hash = archive.asVertex().getProperty(ComputeArchivesSHA512Rules.KEY_SHA512);
+                        try {
+                            HashSet<String> vuls = db.getVulnerabilities(hash);
+                            if (vuls.isEmpty())
+                                return;
 
-                    Iteration.over(ArchiveModel.class) // TODO: Use IteratingRuleProvider?
-                            .perform(
-                                    new AbstractIterationOperation<ArchiveModel>() {
-                                        @Override
-                                        public void perform(GraphRewrite event, EvaluationContext context, ArchiveModel archive) {
-                                            log.info("\tVicti.ms checking archive: " + archive.getFilePath());
-                                            GraphService<VulnerabilityModel> vulGS = new GraphService<VulnerabilityModel>(event.getGraphContext(), VulnerabilityModel.class);
-                                            String hash = archive.asVertex().getProperty(ComputeArchivesSHA512Rules.KEY_SHA512);
-                                            try {
-                                                HashSet<String> vuls = db.getVulnerabilities(hash);
-                                                if (vuls.isEmpty())
-                                                    return;
-
-                                                AffectedJarModel jar = GraphService.addTypeToModel(event.getGraphContext(), archive, AffectedJarModel.class);
-                                                for (String vul : vuls) {
-                                                    log.info("\t\tVulnerability found in " + archive.getFilePath() + ": " + vul);
-                                                    VulnerabilityModel vulM = vulGS.create().setCve(vul);//.setArchive(jar);
-                                                    vulM.setArchive(jar);
-                                                    log.info("" + vulM);
-                                                    jar.addVulnerability(vulM);
-                                                }
-                                            } catch (VictimsException ex) {
-                                                log.severe("Error in Victi.ms when getting vulnerabilities for " + archive.getArchiveName());
-                                            }
-                                            vulGS.commit();
-                                        }
+                            AffectedJarModel jar = GraphService.addTypeToModel(event.getGraphContext(), archive, AffectedJarModel.class);
+                            for (String vul : vuls) {
+                                log.info("\t\tVulnerability found in " + archive.getFilePath() + ": " + vul);
+                                VulnerabilityModel vulM = vulGS.create().setCve(vul);//.setArchive(jar);
+                                vulM.setArchive(jar);
+                                log.info("" + vulM);
+                                jar.addVulnerability(vulM);
+                            }
+                        } catch (VictimsException ex) {
+                            log.severe("Error in Victi.ms when getting vulnerabilities for " + archive.getArchiveName());
+                        }
+                        vulGS.commit();
+                    }
 
 
-                                        @Override
-                                        public String toString() {
-                                            return "Checking archives with Victi.ms";
-                                        }
-                                    }
-                            ).endIteration()
-            ).withId("CheckArchivesWithVictims");
+                    @Override
+                    public String toString() {
+                        return "Checking archives with Victi.ms";
+                    }
+                }
+            ).endIteration()
+        ).withId("CheckArchivesWithVictims");
     }
     // @formatter:on
 }
