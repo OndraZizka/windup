@@ -2,8 +2,8 @@
 
 == What is it?
 
-Java developers can easily incorporate 3rd party components and JARs into applications, exposing them to security vulnerabilities.
-The Victims project is a database of known vulnerable JAR files and Java artifacts affected by known CVE (Common Vulnerabilities and Exposures) issues.
+Java applications may contain 3rd party components, exposing them to security vulnerabilities.
+The Victims project is a database of known vulnerable JAR files and Maven artifacts affected by known CVE issues (Common Vulnerabilities and Exposures).
 
 For more information, see:
 

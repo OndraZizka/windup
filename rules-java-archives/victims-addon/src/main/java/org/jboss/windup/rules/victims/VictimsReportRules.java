@@ -32,7 +32,7 @@ import org.ocpsoft.rewrite.context.EvaluationContext;
 public class VictimsReportRules extends AbstractRuleProvider
 {
     public static final String TITLE = "Security";
-    public static final String TEMPLATE_REPORT = "/org/jboss/windup/rules/victims/Report-Security.html";
+    public static final String TEMPLATE_REPORT = "/org/jboss/windup/rules/victims/Report-Security.ftl.html";
 
     // @formatter:off
     @Override

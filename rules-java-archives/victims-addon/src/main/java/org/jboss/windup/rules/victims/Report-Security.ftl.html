@@ -89,11 +89,17 @@ VictimsReportModel reportModel
                         <div class="path">${reportModel.projectModel.name?html}</div>
                     </#if>
                 </h1>
-				<div>
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-						<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-					</button>
-				</div>
+                <div class="desc">
+                    Java applications may contain 3rd party components, exposing them to security vulnerabilities.
+                    The Victims project is a database of known vulnerable JAR files and Maven artifacts affected by known CVE issues (Common Vulnerabilities and Exposures).
+                    This is a listing of the archives found in the scanned application which were recognized as affected by such security issue.
+                    <br />
+                    <strong>Disclaimer:</strong>
+                    This list is only provided as a complement of application migration report.
+                    Not all security issues are covered here.
+                    Even if this list is empty, your application and the libraries used may still contain security risks.
+                    Do not rely on this as a security auditing tool.
+                </div>
 			</div>
 		</div>
 
