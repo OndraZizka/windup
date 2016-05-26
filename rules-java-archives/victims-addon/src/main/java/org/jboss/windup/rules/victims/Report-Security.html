@@ -13,19 +13,16 @@ VictimsReportModel reportModel
 </#macro>
 
 <#macro affectedJarsRenderer reportModel>
-<div class="panel panel-primary">
-    <#if reportModel.affectedJars?size == 0>
-        <p>No archives containing CVE vulnerabilities were found.</p>
-    <#else>
-        <table class="table table-striped table-bordered">
-            <tr>
-                <th>Affected jar</th>
+    <#-- reportModel.affectedJars is AffectedJarModel extends JarArchiveModel-->
+    <#list reportModel.affectedJars.iterator()>
+        <table class="table">
+            <tr class="header">
+                <th>Affected archive</th>
                 <th>Path</th>
                 <th>CVE</th>
             </tr>
-
-            <#list reportModel.affectedJars.iterator() as file>
-            <tr>
+            <#items as file>
+            <tr class="archive">
                 <td><#if file.fileName?has_content> ${file.fileName} </#if></td>
                 <td><#if file.filePath?has_content> ${file.filePath} </#if></td>
                 <td>
@@ -38,11 +35,11 @@ VictimsReportModel reportModel
                     </ul>
                 </td>
             </tr>
-            </#list>
+            </#items>
         </table>
-    </#if>
-</div>
-
+    <#else>
+        <div class="desc"> No archives containing CVE vulnerabilities were found. </div>
+    </#list>
 </#macro>
 
 
@@ -54,6 +51,14 @@ VictimsReportModel reportModel
     <link href="resources/css/windup.css" rel="stylesheet" media="screen">
     <link href="resources/css/windup.java.css" rel="stylesheet" media="screen">
     <link href="resources/img/favicon.png" rel="shortcut icon" type="image/x-icon"/>
+    <style>
+        .vulnerabilities .listing { padding: 1ex 1em; }
+        .vulnerabilities .listing .header { }
+        .vulnerabilities .listing tr.archive td {
+            padding: 1ex 1em 1ex;
+            border-bottom: 1px solid gray;
+        }
+    </style>
 </head>
 <body role="document" class="reportSecurity">
 	<!-- Navbar -->
@@ -93,7 +98,14 @@ VictimsReportModel reportModel
 		</div>
 
 		<div class="container-fluid theme-showcase" role="main">
-			<@affectedJarsRenderer reportModel />
+            <div class="panel panel-primary vulnerabilities">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Security vulnerabilities</h3>
+                </div>
+                <div class="listing">
+                    <@affectedJarsRenderer reportModel />
+                </div>
+            </div>
         </div>
 	</div>
 	<!-- /container -->

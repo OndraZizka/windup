@@ -55,7 +55,7 @@ public class CheckArchivesWithVictimsRules extends AbstractRuleProvider
         }
         catch(VictimsException ex)
         {
-            throw new WindupException("Failed initializing Victi.ms database: " + ex.getMessage(), ex);
+            throw new WindupException("Failed initializing Victims database: " + ex.getMessage(), ex);
         }
 
 
@@ -73,7 +73,7 @@ public class CheckArchivesWithVictimsRules extends AbstractRuleProvider
                 new AbstractIterationOperation<ArchiveModel>() {
                     @Override
                     public void perform(GraphRewrite event, EvaluationContext context, ArchiveModel archive) {
-                        log.info("\tVicti.ms checking archive: " + archive.getFilePath());
+                        log.info("\tVictims is checking archive: " + archive.getFilePath());
                         GraphService<VulnerabilityModel> vulGS = new GraphService<>(event.getGraphContext(), VulnerabilityModel.class);
                         String hash = archive.asVertex().getProperty(ComputeArchivesSHA512Rules.KEY_SHA512);
                         try {
@@ -90,7 +90,7 @@ public class CheckArchivesWithVictimsRules extends AbstractRuleProvider
                                 jar.addVulnerability(vulM);
                             }
                         } catch (VictimsException ex) {
-                            log.severe("Error in Victi.ms when getting vulnerabilities for " + archive.getArchiveName());
+                            log.severe("Error in Victims when getting vulnerabilities for " + archive.getArchiveName());
                         }
                         vulGS.commit();
                     }
@@ -98,7 +98,7 @@ public class CheckArchivesWithVictimsRules extends AbstractRuleProvider
 
                     @Override
                     public String toString() {
-                        return "Checking archives with Victi.ms";
+                        return "Checking archives against the Victims database of CVE vulnerabilities.";
                     }
                 }
             ).endIteration()

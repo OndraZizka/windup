@@ -9,14 +9,14 @@ import org.jboss.windup.config.ValidationResult;
  *
  * @author Ondrej Zizka
  */
-public class UpdateOption extends AbstractConfigurationOption
+public class VictimsUpdateOption extends AbstractConfigurationOption
 {
     public static final String NAME = "victimsUpdate";
 
     @Override
     public String getDescription()
     {
-        return "Indicates whether to download new Victi.ms database";
+        return "Indicates whether to download new Victims database";
     }
 
     @Override
@@ -28,7 +28,7 @@ public class UpdateOption extends AbstractConfigurationOption
     @Override
     public String getLabel()
     {
-        return "Update Victi.ms database";
+        return "Update Victims database";
     }
 
     @Override
