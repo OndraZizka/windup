@@ -1,5 +1,7 @@
 package org.jboss.windup.util.exception;
 
+import java.util.logging.Logger;
+
 /**
  * Thrown in certain situations when we need to stop Windup execution, typically based on external request.
  *
@@ -10,6 +12,7 @@ public final class WindupStopException extends WindupException
     public WindupStopException(String message)
     {
         super(message);
+        Logger.getLogger(WindupStopException.class.getName()).warning(message);
     }
 
     /**
@@ -18,6 +21,7 @@ public final class WindupStopException extends WindupException
     public WindupStopException(String message, Exception cause)
     {
         super(message, cause);
+        Logger.getLogger(WindupStopException.class.getName()).warning(message);
     }
     /**
      * Intended for wrapping another exception meant to stop the execution.
@@ -25,5 +29,6 @@ public final class WindupStopException extends WindupException
     public WindupStopException(Exception cause)
     {
         super(cause);
+        Logger.getLogger(WindupStopException.class.getName()).warning("Stop requested: " + cause);
     }
 }
