@@ -244,6 +244,7 @@ public class RuleSubset extends DefaultOperationBuilder implements CompositeOper
                         boolean windupStopRequested = listener.beforeRuleEvaluation(event, rule, subContext);
                         if (windupStopRequested)
                         {
+                            log.info("event: " + event + " shouldStop: " + event.shouldWindupStop() );///
                             String msg = "Windup was requested to stop before beforeRuleEvaluation() of " + rule.getId() + ", skipping further rules.";
                             log.fine(msg);
                             event.setWindupStopException(new WindupStopException(msg));

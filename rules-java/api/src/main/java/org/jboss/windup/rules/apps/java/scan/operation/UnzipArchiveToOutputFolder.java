@@ -90,6 +90,7 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
                 final Path tempFolder, final File inputZipFile,
                 final ArchiveModel archiveModel, boolean subArchivesOnly)
     {
+        LOG.info("event: " + event + " shouldStop: " + event.shouldWindupStop() );///
         checkCancelled(event);
 
         final FileService fileService = new FileService(event.getGraphContext());
