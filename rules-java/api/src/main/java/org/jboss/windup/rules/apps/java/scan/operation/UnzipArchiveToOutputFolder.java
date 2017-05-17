@@ -27,6 +27,7 @@ import org.jboss.windup.rules.apps.java.service.WindupJavaConfigurationService;
 import org.jboss.windup.util.Logging;
 import org.jboss.windup.util.ZipUtil;
 import org.jboss.windup.util.exception.WindupException;
+import org.jboss.windup.util.exception.WindupStopException;
 import org.ocpsoft.rewrite.context.EvaluationContext;
 
 
@@ -81,6 +82,9 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
                 final Path tempFolder, final File inputZipFile,
                 final ArchiveModel archiveModel, boolean subArchivesOnly)
     {
+        if (event.shouldWindupStop())
+            throw new WindupStopException("Requested to stop while unzipping " + inputZipFile.getPath());
+
         final FileService fileService = new FileService(event.getGraphContext());
 
         // Setup a temp folder for the archive
@@ -197,11 +201,13 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
 
                     // create dupes for child archives
                     unzipToTempDirectory(event, context, tempFolder, newZipFile, duplicateArchive, true);
-                } else
+                }
+                else
                 {
                     unzipToTempDirectory(event, context, tempFolder, newZipFile, newArchiveModel, false);
                 }
-            } else if (subFile.isDirectory())
+            }
+            else if (subFile.isDirectory())
             {
                 recurseAndAddFiles(event, context, tempFolder, fileService, archiveModel, subFileModel, false);
             }
