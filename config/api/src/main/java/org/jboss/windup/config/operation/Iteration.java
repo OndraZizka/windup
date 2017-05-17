@@ -245,6 +245,9 @@ public class Iteration extends DefaultOperationBuilder
             for (WindupVertexFrame frame : frames)
             try
             {
+                if (event.shouldWindupStop())
+                    throw new WindupStopException("Requested to stop in a generic iteration");
+
                 variables.push();
                 getPayloadManager().setCurrentPayload(variables, frame);
                 boolean conditionResult = true;
