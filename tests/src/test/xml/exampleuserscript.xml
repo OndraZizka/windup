@@ -10,7 +10,7 @@
             </xmlfile>
         </when>
         <perform>
-            <hint issue-display-mode="all" title="title from user script">
+            <hint show-in="all" title="title from user script">
                 <message>User script Container Auth</message>
             </hint>
             <xslt title="User script XSLT Conversion" extension="userscript-converted-example.xml" template="exampleconversion_userdir.xslt"/>

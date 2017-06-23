@@ -8,11 +8,11 @@
                 </xmlfile>
             </when>
             <perform>
-                <hint issue-display-mode="all" title="LogEvent Queue Found Hint" effort="23">
+                <hint show-in="all" title="LogEvent Queue Found Hint" effort="23">
                     <message>Log Event Queue Hint Message</message>
                     <tag>TestTag</tag>
                 </hint>
-                <classification issue-display-mode="all" title="LogEvent Queue Found Classification" effort="29"/>
+                <classification show-in="all" title="LogEvent Queue Found Classification" effort="29"/>
             </perform>
         </rule>
         <rule id="duplicate-handling-rule-2">
