@@ -17,6 +17,18 @@
             <groupId>org.jboss.tattletale</groupId>
             <artifactId>tattletale</artifactId>
             <version>1.2.0.Beta2</version>
+            <exclusions>
+                <!-- WINDUP-1595  The version in TT's POM is obsolete 3.15, let's force newer. -->
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.18.0-GA</version>
         </dependency>
 
         <!-- Addon Dependencies -->
@@ -55,9 +67,9 @@
 
 	<!-- Test Dependencies -->
         <dependency>
-                <groupId>org.jboss.windup</groupId>
-                <artifactId>windup-test-harness</artifactId>
-                <scope>test</scope>
+            <groupId>org.jboss.windup</groupId>
+            <artifactId>windup-test-harness</artifactId>
+            <scope>test</scope>
         </dependency>  
         <dependency>
             <groupId>org.jboss.windup.exec</groupId>
@@ -65,7 +77,6 @@
             <classifier>forge-addon</classifier>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
