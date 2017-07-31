@@ -10,6 +10,15 @@
     <artifactId>windup-rules-tattletale</artifactId>
     <name>Windup Rules - Tattletale</name>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.18.0-GA</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
 
         <!-- Local Dependencies -->
@@ -17,20 +26,12 @@
             <groupId>org.jboss.tattletale</groupId>
             <artifactId>tattletale</artifactId>
             <version>1.2.0.Beta2</version>
-            <exclusions>
-                <!-- WINDUP-1595  The version in TT's POM is obsolete 3.15, let's force newer. -->
-                <exclusion>
-                    <groupId>org.javassist</groupId>
-                    <artifactId>javassist</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.18.0-GA</version>
         </dependency>
-
+        
         <!-- Addon Dependencies -->
         <dependency>
             <groupId>org.jboss.windup.graph</groupId>
