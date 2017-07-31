@@ -18,6 +18,7 @@ import org.jboss.windup.graph.traversal.ProjectModelTraversal;
 import org.jboss.windup.reporting.model.ClassificationModel;
 import org.jboss.windup.reporting.model.EffortReportModel;
 import org.jboss.windup.reporting.category.IssueCategoryModel;
+import org.jboss.windup.reporting.model.IssueDisplayMode;
 import org.ocpsoft.rewrite.config.Rule;
 import org.ocpsoft.rewrite.context.EvaluationContext;
 
@@ -129,6 +130,18 @@ public class ClassificationService extends GraphService<ClassificationModel>
             {
                 return frame(effortReportVertex).getIssueCategory();
             }
+
+            @Override
+            public void accumulate(Vertex effortReportVertex)
+            {
+                /*
+                 * If it is a detail only issue, then summaries should not include it in the count.
+                 */
+                if (frame(effortReportVertex).getIssueDisplayMode() == IssueDisplayMode.DETAIL_ONLY)
+                    return;
+
+                super.accumulate(effortReportVertex);
+            }
         };
         this.getMigrationEffortDetails(traversal, includeTags, excludeTags, recursive, true, accumulator);
         return accumulator.getResults();
@@ -196,14 +209,17 @@ public class ClassificationService extends GraphService<ClassificationModel>
     /**
      * Attach a {@link ClassificationModel} with the given classificationText and description to the provided {@link FileModel}.
      * If an existing Model exists with the provided classificationText, that one will be used instead.
+     *
+     * The classification is looked up by name and created only if not found.
+     * That means that the new description is discarded. FIXME
      */
-    public ClassificationModel attachClassification(GraphRewrite event, Rule rule, FileModel fileModel, String categoryId, String classificationText, String description)
+    public ClassificationModel attachClassification(GraphRewrite event, Rule rule, FileModel fileModel, String categoryId, String classificationTitle, String description)
     {
-        ClassificationModel classification = getUnique(getTypedQuery().has(ClassificationModel.CLASSIFICATION, classificationText));
+        ClassificationModel classification = getUnique(getTypedQuery().has(ClassificationModel.CLASSIFICATION, classificationTitle));
         if (classification == null)
         {
             classification = create();
-            classification.setClassification(classificationText);
+            classification.setClassification(classificationTitle);
             classification.setDescription(description);
             classification.setEffort(0);
 
@@ -217,6 +233,15 @@ public class ClassificationService extends GraphService<ClassificationModel>
 
             ClassificationServiceCache.cacheClassificationFileModel(event, classification, fileModel, true);
             return classification;
+        }
+        else
+        {
+            if (!StringUtils.equals(description, classification.getDescription()))
+                LOG.warning("The description of the newly attached classification differs from the same-titled existing one, so the old description is being changed."
+                        + "\n  Clsf title: " + classification.getClassification()
+                        + "\n  Old desc: " + classification.getDescription()
+                        + "\n  New desc: " + description);
+            classification.setDescription(description);
         }
 
         return attachClassification(event, classification, fileModel);

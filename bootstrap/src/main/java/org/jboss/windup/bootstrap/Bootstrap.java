@@ -53,6 +53,7 @@ import org.jboss.windup.bootstrap.commands.windup.RunWindupCommand;
 import org.jboss.windup.bootstrap.commands.windup.ServerModeCommand;
 import org.jboss.windup.bootstrap.commands.windup.UpdateRulesetsCommand;
 import org.jboss.windup.bootstrap.listener.GreetingListener;
+import org.jboss.windup.util.Util;
 
 /**
  * A class with a main method to bootstrap Windup.
@@ -222,8 +223,7 @@ public class Bootstrap
 
     public static String getVersionString()
     {
-        return "> JBoss Windup, version " + getRuntimeAPIVersion() + ". JBoss Forge, version "
-                    + AddonRepositoryImpl.getRuntimeAPIVersion();
+        return "> Red Hat Application Migration Toolkit (RHAMT) CLI, version " + getRuntimeAPIVersion() + ".";
     }
 
     public static Version getRuntimeAPIVersion()
@@ -231,7 +231,7 @@ public class Bootstrap
         String version = Bootstrap.class.getPackage().getImplementationVersion();
         if (version != null)
         {
-            return new SingleVersion(version);
+            return SingleVersion.valueOf(version);
         }
         return EmptyVersion.getInstance();
     }
@@ -305,7 +305,7 @@ public class Bootstrap
             }
             catch (Exception e)
             {
-                System.out.println("Failed to start Windup!");
+                System.out.println("Failed to start "+ Util.WINDUP_BRAND_NAME_ACRONYM+"!");
                 if (e.getMessage() != null)
                     System.out.println("Failure reason: " + e.getMessage());
                 e.printStackTrace();
@@ -324,7 +324,7 @@ public class Bootstrap
         }
         catch (Throwable t)
         {
-            System.err.println("Windup execution failed due to: " + t.getMessage());
+            System.err.println(Util.WINDUP_BRAND_NAME_ACRONYM +" execution failed due to: " + t.getMessage());
             t.printStackTrace();
         }
     }
